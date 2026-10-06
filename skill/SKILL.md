@@ -17,6 +17,8 @@ In the plan, inspect all available input data, determine the unit of analysis, a
 
 The plan must also identify the available sub-agent concurrency limit and state how many data points will run at once and how the remaining data points will be queued. The main agent must not process a data point itself. The user must be shown the plan and the agent must receive approval before leaving planning mode and beginning analysis.
 
+During planning, recommend and ask the user to confirm one coding unit size and one code abstraction level. These choices control both passes and must be included in every sub-agent prompt. Use the options and prompt fields in [references/coding-settings-and-prompts.md](references/coding-settings-and-prompts.md). Do not start delegation until both choices are confirmed.
+
 ## Required inputs
 
 Identify each individual data point before analysis. For the current interview adapter, one data point is one transcript. Preserve a stable data point ID and the original file path. Ask only for missing information that would change the analysis, such as which field contains the transcript or the study question.
@@ -27,11 +29,11 @@ Record the research objective and research question exactly as supplied, then us
 
 Every data point must be processed by exactly one sub-agent in each analysis pass. This protects the main agent's context window and reduces confirmation bias from a single central reading. Delegate as many sub-agents as the runtime safely allows, and queue the rest. Never silently drop a transcript because the concurrency limit was reached. Continue dispatching queued items as earlier agents finish. Keep the transcript ID in every prompt and result.
 
-After first-pass synthesis, stop or terminate the first-pass agents before starting the second pass. Run one second-pass sub-agent per transcript with the active codebook. Use the same concurrency limit and queueing behavior.
+After each first-pass sub-agent completes its one assigned data point, terminate it. After first-pass synthesis, spawn new second-pass sub-agents. Do not reuse first-pass agents. Each second-pass agent handles one transcript only, then is terminated. Use the same concurrency limit and queueing behavior.
 
 ## First pass, open coding
 
-Tell each sub-agent to analyze only its assigned transcript against the study objective and question. It must identify meaningful ideas, tensions, patterns, exceptions, and details that help answer the study question. It must not be given a proposed codebook and must not force data into predetermined categories.
+Use the first-pass prompt template in [references/coding-settings-and-prompts.md](references/coding-settings-and-prompts.md). Tell each sub-agent to analyze only its assigned transcript against the study objective and question, using the confirmed coding unit size and abstraction level. It must identify meaningful ideas, tensions, patterns, exceptions, and details that help answer the study question. It must not be given a proposed codebook and must not force data into predetermined categories.
 
 For every proposed idea, require a concise analytic label, a short explanation grounded in the transcript, and one or more rich supporting quotes. A quote should stand on its own when possible. Include the interviewer question and enough surrounding turns when the participant response would otherwise lose its meaning, reasoning, or relevant detail. Prefer complete thoughts over short fragments.
 
@@ -47,7 +49,7 @@ The codebook is an analytic artifact, not a count of mentions. Preserve minority
 
 ## Second pass, code application
 
-Give each second-pass sub-agent exactly one transcript and the active codebook. Tell it to apply only existing active codes. It must not create, rename, split, or merge codes. It may report that a code has no instance in the transcript.
+Use the second-pass prompt template in [references/coding-settings-and-prompts.md](references/coding-settings-and-prompts.md). Give each second-pass sub-agent exactly one transcript, the active codebook, and the confirmed coding settings. Tell it to apply only existing active codes. It must not create, rename, split, or merge codes. It may report that a code has no instance in the transcript.
 
 For each applied code, return the code ID, a brief evidence note, and rich exact quotes. Use the same quote rules as the first pass. Include the interviewer question and surrounding turns when needed for meaning. Verify every quote against the original transcript with `scripts/verify_quotes.py` before synthesis.
 

@@ -4,6 +4,8 @@ Quala is a Codex skill for qualitative analysis of interview transcripts.
 
 It begins in a mandatory `/plan` phase. The agent inspects all data, identifies the unit of analysis, checks the sub-agent concurrency limit, and presents a processing plan before any edits or analysis begin. After approval, every data point is processed by its own sub-agent in both analysis passes.
 
+During planning, the user confirms the coding unit size and code abstraction level. These settings are sent to every sub-agent through reusable prompt templates.
+
 First, separate agents examine individual transcripts and identify research-relevant ideas with exact supporting quotes. The main agent then builds an emergent codebook. Each code includes a definition, inclusion criteria, exclusion criteria, and examples. In the second pass, separate agents apply only that active codebook to each transcript.
 
 The skill verifies every quote against its source transcript. It can produce a Markdown codebook, a spreadsheet showing code presence by transcript, JSON transcript-level coding records, and an analysis manifest.
@@ -16,6 +18,7 @@ The complete skill is in the [`skill`](skill) folder.
 - [`verify_quotes.py`](skill/scripts/verify_quotes.py) checks exact quote matches
 - [`quote_is_in_source.py`](skill/scripts/quote_is_in_source.py) returns a required boolean exact-match result
 - [`output-schema.md`](skill/references/output-schema.md) defines stable output fields
+- [`coding-settings-and-prompts.md`](skill/references/coding-settings-and-prompts.md) defines confirmed analysis settings and sub-agent templates
 - [`openai.yaml`](skill/agents/openai.yaml) contains the Codex interface metadata
 
 ## Current scope
