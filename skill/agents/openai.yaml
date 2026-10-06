@@ -1,0 +1,4 @@
+interface:
+  display_name: "Quala"
+  short_description: "Analyze interview transcripts with traceable qualitative codes"
+  default_prompt: "Use $quala to analyze interview transcripts against a research question with verified quotes and structured outputs."
