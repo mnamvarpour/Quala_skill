@@ -4,7 +4,7 @@ Use these fields as a stable baseline. Add fields only when they improve traceab
 
 ## Codebook
 
-Each code has `code_id`, `name`, `definition`, `inclusion`, `exclusion`, `status`, `examples`, and `version`. Each example has `data_point_id`, `quote`, `start`, and `end`.
+Each code has `code_id`, `name`, `definition`, `inclusion`, `exclusion`, `status`, `examples`, and `version`. Inclusion and exclusion criteria are required and must be specific enough to guide second-pass decisions. Each example has `data_point_id`, `quote`, `start`, and `end`.
 
 Use IDs such as `C001` and do not recycle an ID for a different meaning. If a code changes substantially, create a new version and document the change in the manifest.
 
@@ -19,3 +19,5 @@ Include a metadata sheet with the data point ID and source path. Include a prese
 ## Manifest
 
 Record the research objective, research question, input inventory, adapter name, codebook version, agent status, quote verification counts, warnings, and output paths. This makes later iteration auditable.
+
+Also record the planning phase, the identified unit of analysis, the concurrency limit, queue batches, and whether an isolated virtual environment was used.
